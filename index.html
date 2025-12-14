@@ -1,0 +1,1974 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accounting</title>
+    <link rel="icon" href="logo.png">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <style>
+        body,
+        html {
+            scrollbar-width: smooth;
+
+        }
+
+        * {
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        .top-header {
+            background: white;
+            color: black;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 40px;
+            font-size: 14px;
+        }
+
+        .top-header .left span {
+            margin-right: 20px;
+        }
+
+        .top-header .right a {
+            margin-left: 15px;
+        }
+
+        .searchpanel {
+            position: fixed;
+            top: -200px;
+            left: 0;
+            width: 100%;
+            height: 120px;
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            border-top: 1px solid #e5e5e5;
+            transition: top 0.4s ease-in-out;
+            z-index: 2000;
+        }
+
+        .searchpanel.active {
+            top: 0;
+        }
+
+        .search-input {
+            width: 60%;
+            padding: 12px 15px;
+            font-size: 20px;
+            color: #333;
+            border: none;
+            outline: none;
+            border-bottom: 2px solid #ccc;
+        }
+
+        .search-input:focus {
+            border-bottom: 2px solid #3d5afe;
+        }
+
+        .search-icons {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            font-size: 24px;
+        }
+
+        .search-icons i {
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .search-icons i:hover {
+            color: #3d5afe;
+        }
+
+        .close-btn {
+            font-size: 28px;
+            color: #666;
+        }
+
+        .search-btn {
+            color: #3d5afe;
+        }
+
+        .navbar {
+            width: 100%;
+            height: 100px;
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            width: 30px;
+            height:30px;
+        }
+
+        /* =====================
+   DESKTOP MENU
+===================== */
+      
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 25px;
+        }
+
+        .navbar ul li a {
+            position: relative;
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            padding-bottom: 6px;
+        }
+
+        .navbar ul li a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0%;
+            height: 3px;
+            background-color: #3d5afe;
+            transition: width 0.3s ease;
+        }
+
+        .navbar ul li a:hover::after,
+        .navbar ul li a.active::after {
+            width: 100%;
+        }
+
+        /* =====================
+   MOBILE ICONS
+===================== */
+        .menu {
+            display: none;
+            font-size: 26px;
+            cursor: pointer;
+        }
+
+        /* =====================
+   MOBILE MENU (DIV)
+===================== */
+        .mobile-menu {
+            width: 90%;
+            max-width: 400px;
+            height: 80vh;
+            background: #111;
+            position: fixed;
+            top: -100%;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: 0.4s;
+            border-radius: 10px;
+            padding: 20px;
+            z-index: 999;
+        }
+
+        .mobile-menu.active {
+            top: 80px;
+        }
+
+        .mobile-link {
+            padding: 15px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .mobile-link a {
+            color: #fff;
+            font-size: 18px;
+            text-decoration: none;
+        }
+
+        /* Search */
+        .mobile-search {
+            margin-top: 25px;
+            display: flex;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+        }
+
+        .mobile-search input {
+            width: 90%;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #555;
+            color: #fff;
+            outline: none;
+        }
+
+        .mobile-search i {
+            color: #fff;
+            font-size: 20px;
+            margin-left: 10px;
+        }
+
+        /* Social */
+        .social-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            display: flex;
+            justify-content: space-around;
+            background: #151515;
+        }
+
+        .social-footer i {
+            color: #bbb;
+            font-size: 20px;
+        }
+
+        #home {
+            width: 100%;
+            height: 550px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+            background:
+                linear-gradient(to right, rgba(42, 67, 255, 0.85), rgba(42, 67, 255, 0.45)),
+                url("https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1600") center/cover no-repeat;
+
+            color: #fff;
+            padding: 100px;
+        }
+
+        .content1 {
+            flex: 0 0 600px;
+            align-items: center;
+        }
+
+        .content1 h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .content1 a {
+            margin-bottom: 30px;
+            font-size: 18px;
+            color: #fff
+        }
+
+        .btn {
+            padding: 18px 35px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 25px;
+            margin-right: 15px;
+            border-radius: 8px;
+        }
+
+        .primary-btn {
+            background: #fff;
+            color: black;
+            border: none;
+        }
+
+        .outline-btn {
+            background: transparent;
+            color: #fff;
+            border: 2px solid #fff;
+        }
+
+        .hero-right {
+            flex: 0 0 500px;
+            display: flex;
+            justify-content: flex-end;
+            width: 70%;
+        }
+
+        .consult-box {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            width: 60%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .blue-line {
+            width: 4px;
+            height: 18px;
+            background: #3d5afe;
+            margin-right: 8px;
+        }
+
+        .consult-box h3 {
+            margin-bottom: 20px;
+            font-size: 22px;
+            color: black;
+        }
+
+        .consult-box input,
+        .consult-box select {
+            width: 100%;
+            padding: 8px 10px;
+            margin-bottom: 20px;
+        }
+
+        .small-text {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .send-btn {
+            width: 100%;
+            padding: 12px;
+            background: #3d5afe;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #service {
+            margin: 0;
+            margin-top: 100px;
+            padding: 80px 100px;
+            text-align: center;
+        }
+
+        .content2 {
+            margin-top: 100px;
+        }
+
+        .content2 a {
+            color: #666;
+            font-size: 20px;
+        }
+
+        .content2 h1 {
+            font-size: 36px;
+        }
+
+        .box {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-top: 100px;
+        }
+
+        .child {
+            padding: 30px;
+            width: 100%;
+            height: 300px;
+            text-align: center;
+            justify-content: center;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(93, 101, 216, 0.1);
+        }
+
+        .child i {
+            font-size: 40px;
+            width: 70px;
+            height: 80px;
+            line-height: 80px;
+            border-radius: 8%;
+            background-color: #5dfe3d1a;
+            color: #3d5afe;
+            margin-bottom: 20px;
+        }
+
+        .child h4 {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .child p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .child:hover {
+            box-shadow: 0 6px 12px rgba(17, 29, 192, 0.2);
+        }
+
+        .child:hover i {
+            background-color: blue;
+            color: white;
+            border-radius: 8%;
+        }
+
+        #aboutus {
+            padding: 0px;
+            margin: 0px;
+            align-items: center;
+            height: auto;
+        }
+
+        .about1 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+        }
+
+        .c1 .primary-btn {
+            background: #3d5afe;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 25px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .c1 img {
+            width: 50%;
+            height: auto;
+            margin: 100px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            height: 500px;
+        }
+
+        .c2 h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .c2 p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .c2 .btn {
+            width: 150px;
+            background: #3d5afe;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .c2 h3 {
+            color: #666;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        #facts {
+            position: relative;
+            width: 100%;
+            text-align: center;
+            margin-top: 60px;
+            margin-bottom: 60px;
+            padding: 120px 20px 200px;
+
+            background:
+                linear-gradient(to right, rgba(42, 67, 255, 0.85), rgba(42, 67, 255, 0.55)),
+                url("https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1600") center/cover no-repeat;
+
+            color: white;
+            border-radius: 12px;
+        }
+
+        /* Titles inside the facts section */
+        #facts .subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        #facts .facts-title {
+            font-size: 38px;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        /* FACTS BOX (GRID CONTAINER) */
+        .facts-box {
+            position: absolute;
+            left: 50%;
+            bottom: -120px;
+            transform: translateX(-50%);
+            color: black;
+            width: 80%;
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 50px 20px;
+
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+
+            box-shadow: 0px 12px 30px rgba(0, 0, 0, 0.20);
+            z-index: 10;
+        }
+
+        .fact-item {
+            text-align: center;
+        }
+
+        .fact-item h1 {
+            font-size: 48px;
+            font-weight: bold;
+            color: #3d5afe;
+            margin-bottom: 10px;
+        }
+
+        .fact-item i {
+            font-size: 26px;
+            color: #3d5afe;
+            margin-bottom: 10px;
+        }
+
+        .fact-item p {
+            font-size: 16px;
+            color: #444;
+        }
+
+
+
+        #whyus {
+            margin-top: 150px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            padding: 80px 100px;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .d1 h4 {
+            color: gray;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .d1 h5 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .d1 a {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+
+        .child3 {
+            padding: 20px;
+            gap: 10px;
+        }
+
+        .parent2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 20px 0;
+        }
+
+        .child3:hover {
+            cursor: pointer;
+            transform: translateY(-5px);
+            transition: transform 0.3s ease;
+        }
+
+        .child3 h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .child3:hover h3 {
+            color: #3d5afe;
+        }
+
+        .child3 p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .d2 img {
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 70%;
+            height: 500px;
+            margin-left: 100px;
+        }
+
+        .h4 {
+            color: gray;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        #testimonials {
+            /* border: 1px solid red; */
+            height: auto;
+            margin-top: 100px;
+            padding-bottom: 100px;
+
+        }
+
+        .test1 {
+            text-align: center;
+            background-color: rgb(219, 218, 218);
+            height: 200px;
+            align-content: center
+        }
+
+        .test1 h2 {
+            margin-top: 100px;
+            color: gray;
+        }
+
+        .test2 {
+            text-align: center;
+        }
+
+        .testimonial-section {
+            width: 80%;
+            margin: auto;
+            padding-top: 40px;
+        }
+
+        .testimonial-slider {
+            position: relative;
+            width: 90%;
+            max-width: 1100px;
+            margin: auto;
+            min-height: 420px;
+            /* IMPORTANT */
+        }
+
+        /* ===== SLIDE BOX ===== */
+        .testimonial-slide {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            background: #fff;
+            padding: 40px 50px;
+            border-radius: 12px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+
+            display: grid;
+            grid-template-columns: 1fr 2px 1fr;
+            gap: 30px;
+
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.5s ease;
+        }
+
+        /* ACTIVE SLIDE */
+        .testimonial-slide.active {
+            opacity: 1;
+            transform: translateY(0);
+            z-index: 10;
+        }
+
+        /* ANIMATIONS */
+        .slide-up {
+            transform: translateY(-40px);
+            opacity: 0;
+        }
+
+        .slide-down {
+            transform: translateY(40px);
+            opacity: 0;
+        }
+
+        /* DIVIDER BAR */
+        .divider {
+            width: 2px;
+            background: #ddd;
+            border-radius: 2px;
+        }
+
+        /* ===== CARD ===== */
+        .testimonial-card {
+            padding: 10px;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        .text {
+            color: #444;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        span {
+            font-size: 14px;
+            color: #777;
+        }
+
+        .quote-icon {
+            font-size: 26px;
+            margin-top: 15px;
+            color: #3d5afe;
+        }
+
+        /* ===== DOTS ===== */
+        .testimonial-dots {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .dot {
+            height: 12px;
+            width: 12px;
+            background: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 12px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .dot.active {
+            background: #3d5afe;
+            transform: scale(1.2);
+        }
+
+        .logo-slider {
+            margin-top: 100px;
+            width: 100%;
+            overflow: hidden;
+            background: #ffffff;
+            padding: 30px;
+            margin-top: 50px;
+        }
+
+        .logo-track {
+            display: flex;
+            width: calc(200px * 12);
+            /* 12 logos total (6 original + 6 duplicate) */
+            animation: scroll 360s linear infinite;
+        }
+
+        .logo-track img {
+            width: 200px;
+            height: auto;
+            opacity: 0.35;
+            margin: 0 30px;
+            filter: grayscale(100%);
+            transition: 0.3s;
+        }
+
+        .logo-track img:hover {
+            opacity: 0.7;
+            filter: grayscale(0%);
+        }
+
+        /* KEYFRAMES */
+        #prices {
+            width: 100%;
+            height: auto;
+
+        }
+
+        .test2 {
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        .test2 h1 {
+            font-size: 36px;
+            margin-bottom: 30px;
+
+        }
+
+        .test2 h2 {
+            color: gray;
+            margin-bottom: 10px;
+        }
+
+        /* PRICING TABLE FIX */
+        .pricing-table {
+            width: 60%;
+            margin: auto;
+            display: flex;
+        }
+
+        .left-col,
+        .right-col {
+            width: 50%;
+            background: #ffffff;
+            text-align: center;
+            border: 1px solid #e6e6e6;
+        }
+
+        .right-col {
+            border-color: #4c68ff;
+        }
+
+        .row {
+            padding: 16px;
+            font-size: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .row.header {
+            background: #f1f3ff;
+            font-weight: bold;
+        }
+
+        .button {
+            width: 60%;
+            /* MATCH TABLE WIDTH */
+            margin: 30px auto 0;
+            text-align: center;
+        }
+
+        .contact-btn {
+            width: 100%;
+            padding: 12px 25px;
+            background: #3d5afe;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .contact-btn a {
+            color: white;
+            font-size: 16px;
+        }
+
+        .cta {
+            width: 100%;
+            height: 250px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px 60px;
+
+            background:
+                linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
+                url("https://images.unsplash.com/photo-1521790361543-f645cf042ec7?w=1600") center/cover no-repeat;
+
+            color: white;
+            box-sizing: border-box;
+            margin-top: 60px;
+        }
+
+        /* Left Text Area */
+        .cta-left {
+            max-width: 55%;
+        }
+
+        .cta-left h1 {
+            font-size: 42px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .cta-left p {
+            font-size: 18px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        /* Right Button Area */
+        .cta-right {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cta-btn {
+            background: #00c851;
+            color: white;
+            padding: 16px 32px;
+            font-size: 18px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s ease;
+        }
+
+        .cta-btn:hover {
+            background: #009e3e;
+        }
+
+        .footer {
+            background: #ffffff;
+            padding: 60px 80px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 50px;
+            align-items: start;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            background: #3d5afe;
+            color: #fff;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 20px;
+        }
+
+        .logo-icon img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .footer-logo h3 {
+            font-size: 22px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .footer-logo span {
+            font-weight: normal;
+            color: #555;
+        }
+
+        .footer-text {
+            margin: 20px 0;
+            color: #777;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .footer-copy {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #aaa;
+        }
+
+        .footer-col h4 {
+            font-size: 16px;
+            color: #111;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .footer-col a {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 15px;
+            color: #666;
+            text-decoration: none;
+        }
+
+        .footer-col a:hover {
+            color: #3d5afe;
+        }
+
+        .footer-col p {
+            color: #555;
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+
+        .footer-social {
+            margin-top: 15px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: #eef2ff;
+            color: #3d5afe;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background: #3d5afe;
+            color: #fff;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        @media (max-width: 992px) {
+
+            #home {
+                flex-direction: column;
+                padding: 10px;
+                background:
+                    linear-gradient(to bottom, rgba(42, 67, 255, 0.85), rgba(42, 67, 255, 0.45)),
+                    url("https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1600") center/cover no-repeat;
+                height: auto;
+            }
+
+            .navbar ul {
+                display: none;
+            }
+
+            .menu {
+                display: block;
+            }
+
+            .hero-right {
+                justify-content: flex-start;
+                margin-top: 0 !important;
+            }
+
+            .box {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            #aboutus {
+                scrollbar-width: none;
+                margin: 0;
+                padding: 0;
+                overflow-x: hidden;
+                height: auto;
+            }
+
+            .c1 img {
+                width: 50%;
+                height: auto;
+                margin: 50px;
+
+            }
+
+            .c2 {
+                margin-left: 10px;
+                align-items: center;
+            }
+
+            .c2 p {
+                justify-content: justify;
+            }
+
+            .box {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .child {
+                height: auto;
+            }
+
+            .testimonial-dots {
+                margin-top: 100px;
+            }
+
+        }
+
+        @media (max-width: 768px) {
+            * {
+                scrollbar-width: none;
+            }
+
+            .box {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .child {
+                height: auto;
+                width: 100%;
+            }
+
+            #aboutus {
+                scrollbar-width: none;
+                margin: 0;
+                padding: 0;
+                overflow-x: hidden;
+                height: auto;
+            }
+
+
+            .about1 {
+                grid-template-columns: repeat(1, 1fr);
+            }
+
+            .box {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .child p {
+                font-size: 14px;
+            }
+
+            .c1 img {
+                width: 40%;
+                height: auto;
+                margin: 70px;
+            }
+
+            .fact-item h1 {
+                font-size: 36px;
+            }
+
+            .facts-box {
+                grid-template-columns: repeat(1, 1fr);
+                display: absolute;
+                bottom: -300px;
+            }
+
+            /* .parent2{
+                grid-template-columns: repeat(1, 1fr);
+            } */
+            .d2 img {
+                margin-left: 30px;
+                width: 100%;
+                height: auto;
+            }
+
+            .testimonial-dots {
+                margin-top: 120px;
+            }
+        }
+
+        @media screen and (width<768px) and (width>576px) {
+            .header {
+                overflow-x: hidden;
+                display: none;
+            }
+
+            #aboutus {
+                scrollbar-width: none;
+                margin: 0;
+                padding: 0;
+                overflow-x: hidden;
+                height: auto;
+
+            }
+
+            .box {
+                grid-template-columns: repeat(1, 1fr);
+                height: auto;
+            }
+
+            .about1 {
+                grid-template-columns: repeat(1, 1fr);
+            }
+
+            .parent2 {
+                grid-template-columns: repeat(1, 1fr);
+            }
+
+            #whyus {
+                grid-template-columns: repeat(1, 1fr);
+            }
+
+            .d2 img {
+                margin-left: 0px;
+                width: 100%;
+                height: auto;
+            }
+
+            .c1 img {
+                width: 40%;
+                height: auto;
+                margin: 70px;
+            }
+
+            .fact-item h1 {
+                font-size: 26px;
+            }
+
+            .facts-box {
+                grid-template-columns: repeat(1, 1fr);
+                display: absolute;
+                bottom: -250px;
+            }
+
+            .footer-container {
+                grid-template-columns: repeat(1, 1fr);
+                gap: 20px;
+            }
+
+            .cta {
+                flex-direction: column;
+                height: auto;
+                gap: 20px;
+            }
+
+            .cta-left h1 {
+                font-size: 32px;
+            }
+
+            .cta-left p {
+                font-size: 16px;
+            }
+
+            #testimonials {
+                height: auto;
+            }
+
+            .testimonial-slide {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .divider {
+                display: none;
+            }
+
+            .testimonial-slider {
+                padding-bottom: 60px;
+            }
+
+            .testimonial-dots {
+                margin-top: 400px;
+            }
+
+            #prices {
+                height: auto;
+            }
+
+            .pricing-table {
+                height: auto;
+            }
+
+            .row {
+                display: flex;
+
+            }
+
+        }
+
+        @media screen and (width<576px) {
+            .header {
+                overflow-x: hidden;
+                display: none;
+            }
+
+
+            #aboutus {
+                scrollbar-width: none;
+                margin: 0;
+                padding: 0;
+                overflow-x: hidden;
+                height: auto;
+
+            }
+
+            .header .top-header {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .box {
+                grid-template-columns: repeat(1, 1fr);
+                height: auto;
+            }
+
+            .fact-item h1 {
+                font-size: 22px;
+            }
+
+            .facts-box {
+                grid-template-columns: repeat(1, 1fr);
+                display: absolute;
+                bottom: -200px;
+            }
+
+            .footer-container {
+                grid-template-columns: repeat(1, 1fr);
+                gap: 20px;
+            }
+
+            .cta-left h1 {
+                font-size: 24px;
+            }
+
+            .cta-left p {
+                font-size: 12px;
+            }
+
+            .parent2 {
+                grid-template-columns: repeat(1, 1fr);
+            }
+
+            #whyus {
+                grid-template-columns: repeat(1, 1fr);
+            }
+
+            .d2 img {
+                margin-left: 0px;
+                width: 100%;
+                height: auto;
+            }
+
+            #testimonials {
+                height: auto;
+            }
+
+            .testimonial-slide {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .divider {
+                display: none;
+            }
+
+            .testimonial-slider {
+                padding-bottom: 60px;
+            }
+
+            .testimonial-dots {
+                margin-top: 400px;
+            }
+
+            #prices {
+                height: auto;
+            }
+
+            .pricing-table {
+                height: auto;
+            }
+
+            .row {
+                display: flex;
+            }
+
+            .pricing-column .right-col .row.header {
+                padding-bottom: 24px;
+            }
+
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+
+        <div class="top-header">
+            <div class="left">
+                <span><i class="fa-regular fa-envelope"></i> sbrand@email.com</span>
+                <span><i class="fa-solid fa-phone"></i> +91 12345 98760</span>
+                <span><i class="fa-regular fa-clock"></i> Mon. - Sat. 9AM - 6PM</span>
+            </div>
+
+            <div class="right">
+                <a href="#home"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#home"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#home"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" id="openSearch"><i class="fa-solid fa-magnifying-glass"></i></a>
+            </div>
+        </div>
+
+        <div class="searchpanel" id="searchPanel">
+
+            <input type="text" placeholder="Search Here.." class="search-input">
+
+            <div class="search-icons">
+                <i class="fa-solid fa-magnifying-glass search-btn"></i>
+                <i class="fa-solid fa-xmark close-btn" id="closeSearch"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="navbar">
+        <div class="logo">
+            <img src="logo.png" alt="">
+            <h2>Accounting</h2>
+        </div>
+        <div class="menu">
+            <i class="fa-solid fa-list" id="openMenu"></i>
+            <i class="fa-solid fa-xmark" id="closeMenu" style="display:none;"></i>
+        </div>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#service">Service</a></li>
+            <li><a href="#aboutus">About us</a></li>
+            <li><a href="#whyus">Why us</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="#prices">Prices</a></li>
+        </ul>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu">
+
+        <div class="mobile-link"><a href="#home">Home</a></div>
+        <div class="mobile-link"><a href="#service">Services</a></div>
+        <div class="mobile-link"><a href="#aboutus">About us</a></div>
+        <div class="mobile-link"><a href="#whyus">Why us</a></div>
+        <div class="mobile-link"><a href="#testimonials">Testimonials</a></div>
+        <div class="mobile-link"><a href="#prices">Prices</a></div>
+
+        <div class="mobile-search">
+            <input type="text" placeholder="Search here..">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+
+        <div class="social-footer">
+            <a href="#home"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#home"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#home"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+    </div>
+
+    <section id="home">
+        <div class="content1" data-aos="fade-right" data-aos-offset="300" data-aos-easing="ease-in-sine">
+            <h1>Accounting services starting from <u>$50/month</u></h1>
+            <a>It didnt members sit well way room editing shorthand means racially service. Damaging shock parties
+                educational</a>
+            <br>
+            <button class="btn primary-btn">Our service</button>
+            <button class="btn outline-btn">Hire us →</button>
+        </div>
+        <div class="hero-right" data-aos="fade-left" data-aos-anchor="#example-anchor" data-aos-offset="500"
+            data-aos-duration="500">
+            <div class="consult-box">
+                <form action="">
+
+                    <h3><span class="blue-line"></span> Book a consultation!</h3>
+
+                    <input type="text" placeholder="Company name" required>
+                    <input type="text" placeholder="Phone number" required>
+                    <input type="email" placeholder="E-mail" required>
+
+                    <select>
+                        <option>Subject for consultation</option>
+                        <option>Tax advice</option>
+                        <option>Bookkeeping</option>
+                        <option>Financial analysis</option>
+                    </select>
+
+                    <p class="small-text">
+                        It didn't members sit well way room editing shorthand means racially service.
+                    </p>
+
+                    <button class="send-btn">Send message</button>
+                </form>
+
+            </div>
+        </div>
+
+    </section>
+
+    <section id="service">
+        <div class="content2">
+            <a>what we do</a>
+            <h1>We offer premium accounting services to our clients</h1>
+        </div>
+        <div class="box">
+            <div class="child" data-aos="flip-left" data-aos-easing="ease-out-cubic" data-aos-duration="2000">
+                <i class="fa-solid fa-glasses"></i>
+                <h4>Accounting sevice</h4>
+                <p>Now is the winter of our discontent Made glorious summer by this sun of York</p>
+            </div>
+            <div class="child" data-aos="flip-left" data-aos-easing="ease-out-cubic" data-aos-duration="2000">
+                <i class="fa-solid fa-envelope-open-text"></i>
+                <h4>
+                    Document management
+                </h4>
+                <p>Now is the winter of our discontent Made glorious summer by this sun of York</p>
+            </div>
+            <div class="child" data-aos="flip-right" data-aos-easing="ease-out-cubic" data-aos-duration="2000">
+                <i class="fa-regular fa-headphones"></i>
+                <h4>Client support</h4>
+                <p>Now is the winter of our discontent Made glorious summer by this sun of York</p>
+            </div>
+            <div class="child" data-aos="flip-right" data-aos-easing="ease-out-cubic" data-aos-duration="2000">
+                <i class="fa-solid fa-chart-line"></i>
+                <h4>Financial analysis</h4>
+                <p>Now is the winter of our discontent Made glorious summer by this sun of York</p>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="aboutus">
+        <div class="about1">
+            <div class="c1" data-aos="zoom-in-right" data-aos-duration="1500">
+                <img src="about-us.jpg" alt="">
+
+            </div>
+            <div class="c2" data-aos="zoom-in" data-aos-duration="1500">
+                <h3>
+                    About us
+                </h3>
+                <h2>We are innovation & efficiency</h2>
+                <p>Now is the winter of our discontent Made glorious summer by this sun of York; And all the clouds that
+                    lour’d upon our house In the deep bosom of the ocean buried. Now are our brows bound with victorious
+                    wreaths</p>
+                <button class="btn primary-btn">Learn more</button>
+
+            </div>
+        </div>
+
+        <div id="facts">
+
+            <p class="subtitle">Some facts</p>
+            <h2 class="facts-title">Achievements in number</h2>
+
+            <div class="facts-box">
+
+                <div class="fact-item">
+                    <h1 class="count" data-target="512">0</h1>
+                    <i class="fa-solid fa-check-circle"></i>
+                    <p>Finished Projects</p>
+                </div>
+
+                <div class="fact-item">
+                    <h1 class="count" data-target="733">0</h1>
+                    <i class="fa-solid fa-mug-hot"></i>
+                    <p>Cups of Coffee</p>
+                </div>
+
+                <div class="fact-item">
+                    <h1 class="count" data-target="10000">0</h1>
+                    <i class="fa-solid fa-book"></i>
+                    <p>Hours of Work</p>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <section id="whyus">
+        <div class="d1">
+            <h3 class="h4" data-aos="fade-right" data-aos-duration="1000">why us?</h3>
+            <h2 class="h5" data-aos="fade-right" data-aos-duration="1000">Benefits you get as a client</h2>
+            <p data-aos="fade-right" data-aos-duration="1000">Appearing registration home arent policies mean indemnify.
+            </p>
+            <div class="parent2">
+                <div class="child3" data-aos="zoom-in-up" data-aos-duration="1500">
+                    <h3>Financial experts</h3>
+                    <p>Now is the winter of our discontent Made glorious summer by this sun of York</p>
+                </div>
+
+                <div class="child3" data-aos="zoom-in-up" data-aos-duration="1500">
+                    <h3>Weekly statistics</h3>
+                    <p>Now is the winter of our discontent Made glorious summer by this sun of York</p>
+                </div>
+
+                <div class="child3" data-aos="zoom-in-down" data-aos-duration="1500">
+                    <h3>Fast tax reports</h3>
+                    <p>Now is the winter of our discontent Made glorious summer by this sun of York</p>
+                </div>
+
+                <div class="child3" data-aos="zoom-out-down" data-aos-duration="1500">
+                    <h3>24/7 Reports</h3>
+                    <p>Now is the winter of our discontent Made glorious summer by this sun of York</p>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="d2" data-aos="zoom-out-left" data-aos-duration="1500">
+            <img src="why-us.jpg" alt="">
+        </div>
+
+    </section>
+
+    <section id="testimonials">
+        <div class="test1" data-aos="zoom-in-up" data-aos-duration="1500">
+            <h2>Testimonials</h2>
+            <h1>Client testimonials</h1>
+        </div>
+        <div class="testimonial-section">
+
+
+            <div class="testimonial-slider">
+
+                <!-- SLIDE 1 -->
+                <div class="testimonial-slide active">
+
+                    <div class="testimonial-card">
+                        <img src="testimonials-client1.jpg" class="avatar">
+                        <p class="text">
+                            Now is the winter of our discontent. Made glorious summer by this sun of York.
+                            And all the clouds that lour’d upon our house. In the deep bosom of the ocean buried.
+                        </p>
+                        <h3>Arnold Oak</h3>
+                        <span>Oak corporation co-founder</span>
+                        <div><i class="fa-solid fa-quote-left quote-icon"></i></div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="testimonial-card">
+                        <img src="testimonials-client2.png" class="avatar">
+                        <p class="text">
+                            Now is the winter of our discontent. Made glorious summer by this sun of York.
+                            All the clouds that lour’d upon our house. In the deep bosom of the ocean buried.
+                        </p>
+                        <h3>Amber Grassling</h3>
+                        <span>Grassling corporation co-founder</span>
+                        <div><i class="fa-solid fa-quote-left quote-icon"></i></div>
+                    </div>
+
+                </div>
+
+                <!-- SLIDE 2 -->
+                <div class="testimonial-slide">
+
+                    <div class="testimonial-card">
+                        <img src="testimonials-client2.png" class="avatar">
+                        <p class="text">Now is the winter of our discontent. Made glorious summer by this sun of York.
+                            All the clouds that lour’d upon our house. In the deep bosom of the ocean buried.</p>
+                        <h3>Amber Grassling</h3>
+                        <span>Grassling corporation co-founder</span>
+                        <div><i class="fa-solid fa-quote-left quote-icon"></i></div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="testimonial-card">
+                        <img src="testimonials-client1.jpg" class="avatar">
+                        <p class="text">Now is the winter of our discontent. Made glorious summer by this sun of York.
+                            All the clouds that lour’d upon our house. In the deep bosom of the ocean buried.</p>
+                        <h3>Arnold Oak</h3>
+                        <span>Oak corporation co-founder</span>
+                        <div><i class="fa-solid fa-quote-left quote-icon"></i></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- DOTS -->
+            <div class="testimonial-dots">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+            </div>
+
+        </div>
+
+        <div class="logo-slider">
+            <div class="logo-track">
+                <img src="partner1.png">
+                <img src="partner2.png">
+                <img src="partner3.png">
+                <img src="partner4.png">
+                <img src="partner5.png">
+                <img src="partner6.png">
+
+                <!-- duplicate for infinite loop -->
+                <img src="partner1.png">
+                <img src="partner2.png">
+                <img src="partner3.png">
+                <img src="partner4.png">
+                <img src="partner5.png">
+                <img src="partner6.png">
+            </div>
+        </div>
+
+    </section>
+
+    <section id="prices">
+        <div class="test2">
+            <h2>Prices list</h2>
+            <h1>We prices accordingly</h1>
+        </div>
+        <div class="pricing-table" data-aos="fade-up" data-aos-duration="1500">
+
+            <div class="pricing-column left-col">
+                <div class="row header">Document count</div>
+                <div class="row">1 – 30</div>
+                <div class="row">31 – 50</div>
+                <div class="row">51 – 70</div>
+                <div class="row">71 – 100</div>
+                <div class="row">101 – 130</div>
+                <div class="row">131 – 160</div>
+                <div class="row">161 – 180</div>
+                <div class="row">181 – 200</div>
+                <div class="row">201 – 230</div>
+                <div class="row">231 – …</div>
+            </div>
+
+            <div class="pricing-column right-col">
+                <div class="row header">Price</div>
+                <div class="row">40,00 €</div>
+                <div class="row">60,00 €</div>
+                <div class="row">100,00 €</div>
+                <div class="row">130,00 €</div>
+                <div class="row">150,00 €</div>
+                <div class="row">200,00 €</div>
+                <div class="row">230,00 €</div>
+                <div class="row">260,00 €</div>
+                <div class="row">300,00 €</div>
+                <div class="row">Custom pricing</div>
+            </div>
+
+        </div>
+        <div class="button" data-aos="zoom-out" data-aos-duration="1500">
+            <button class="contact-btn"><a href="#home">contact us</a></button>
+        </div>
+
+        <div class="cta">
+            <div class="cta-left" data-aos="fade-right" data-aos-duration="1500">
+                <h1>Financial experts one click away!</h1>
+                <p>
+                    It didn’t members sit well way room editing shorthand means racially service.<br>
+                    Damaging shock parties educational
+                </p>
+            </div>
+
+            <div class="cta-right" data-aos="fade-left" data-aos-duration="1500">
+                <button class="cta-btn">Hire us today!</button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-container">
+
+            <!-- Logo + Description -->
+            <div class="footer-col" data-aos="fade-right" data-aos-duration="1500">
+                <div class="footer-logo">
+                    <span class="logo-icon" data-aos="zoom-in" data-aos-duration="2500"><img src="logo.png"
+                            alt=""></span>
+                    <h3> <span>accounting</span></h3>
+                </div>
+
+                <p class="footer-text">
+                    Now is the winter of our discontent Made glorious
+                    summer by this sun of York
+                </p>
+
+                <p class="footer-copy">© 2019 Jevelin. All Rights Reserved.</p>
+            </div>
+
+            <!-- Services -->
+            <div class="footer-col" data-aos="fade-up" data-aos-duration="1500">
+                <h4>Services</h4>
+                <a href="#">Accounting</a>
+                <a href="#">Financing</a>
+                <a href="#">New business</a>
+            </div>
+
+            <!-- About us -->
+            <div class="footer-col" data-aos="fade-up" data-aos-duration="1500">
+                <h4>About us</h4>
+                <a href="#">Why us</a>
+                <a href="#">Testimonials</a>
+                <a href="#">About</a>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="footer-col" data-aos="fade-left" data-aos-duration="1500">
+                <h4>Contact information</h4>
+                <p>470 344 424 4252</p>
+                <p>brand@company.co</p>
+
+                <div class="footer-social">
+                    <span class="social-icon"><i class="fa-brands fa-facebook-f"></i></span>
+                    <span class="social-icon"><i class="fa-brands fa-twitter"></i></span>
+                    <span class="social-icon"><i class="fa-brands fa-instagram"></i></span>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <script>
+        //search panel
+        // Get elements
+        const openBtn = document.getElementById("openSearch");
+        const searchPanel = document.getElementById("searchPanel");
+        const closeBtn = document.getElementById("closeSearch");
+
+        // OPEN SEARCH PANEL
+        openBtn.addEventListener("click", (e) => {
+            e.preventDefault(); // prevent page from jumping
+            searchPanel.classList.add("active");
+        });
+
+        // CLOSE SEARCH PANEL
+        closeBtn.addEventListener("click", () => {
+            searchPanel.classList.remove("active");
+        });
+
+        // CLOSE PANEL WHEN CLICKING OUTSIDE
+        document.addEventListener("click", (e) => {
+            const clickedInside = searchPanel.contains(e.target);
+            const clickedOpenButton = e.target.closest("#openSearch");
+
+            if (!clickedInside && !clickedOpenButton) {
+                searchPanel.classList.remove("active");
+            }
+        });
+
+        //underline logic
+        const navLinks = document.querySelectorAll(".navbar ul li a");
+
+        // highlight on click
+        navLinks.forEach(link => {
+            link.addEventListener("click", () => {
+                navLinks.forEach(l => l.classList.remove("active"));
+                link.classList.add("active");
+            });
+        });
+
+        // highlight on scroll
+        const sections = document.querySelectorAll("section");
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(l => l.classList.remove("active"));
+
+                    const link = document.querySelector(
+                        `.navbar ul li a[href="#${entry.target.id}"]`
+                    );
+
+                    if (link) link.classList.add("active");
+                }
+            });
+        }, { threshold: 0.3 });  // 30% visible
+
+        sections.forEach(section => observer.observe(section));
+
+        // count logic
+        const counters = document.querySelectorAll('.count');
+        let started = false;
+
+        function startCounting() {
+            const section = document.querySelector("#facts");
+            const rect = section.getBoundingClientRect();
+
+            if (!started && rect.top < window.innerHeight - 100) {
+                counters.forEach(counter => {
+                    let target = +counter.getAttribute("data-target");
+                    let count = 0;
+                    let speed = target / 100;
+
+                    let update = setInterval(() => {
+                        count += speed;
+                        counter.textContent = Math.ceil(count);
+
+                        if (count >= target) clearInterval(update);
+                    }, 20);
+                });
+
+                started = true;
+            }
+        }
+
+        window.addEventListener("scroll", startCounting);
+
+
+        // testimonial slider logic
+        const slides = document.querySelectorAll(".testimonial-slide");
+        const dots = document.querySelectorAll(".dot");
+
+        let current = 0;
+
+        function showSlide(target) {
+            const forward = target > current;
+            const backward = target < current;
+
+            slides.forEach(s => s.classList.remove("active", "slide-up", "slide-down"));
+            dots.forEach(d => d.classList.remove("active"));
+
+            if (forward) slides[current].classList.add("slide-up");
+            else if (backward) slides[current].classList.add("slide-down");
+
+            setTimeout(() => {
+                slides[target].classList.add("active");
+            }, 50);
+
+            dots[target].classList.add("active");
+            current = target;
+        }
+
+        dots.forEach((dot, i) => {
+            dot.addEventListener("click", () => showSlide(i));
+        });
+
+        showSlide(0);
+
+
+
+        // ==========================
+        // MOBILE MENU LOGIC (FIXED)
+        // ==========================
+        const mobileMenu = document.getElementById("mobileMenu");
+        const openMenuBtn = document.getElementById("openMenu");
+        const closeMenuBtn = document.getElementById("closeMenu");
+
+        // OPEN MENU
+        openMenuBtn.addEventListener("click", () => {
+            mobileMenu.classList.add("active");
+            openMenuBtn.style.display = "none";
+            closeMenuBtn.style.display = "block";
+        });
+
+        // CLOSE MENU (X ICON)
+        closeMenuBtn.addEventListener("click", closeMenu);
+
+        // CLOSE MENU ON LINK CLICK
+        document.querySelectorAll(".mobile-link a").forEach(link => {
+            link.addEventListener("click", closeMenu);
+        });
+
+        function closeMenu() {
+            mobileMenu.classList.remove("active");
+            closeMenuBtn.style.display = "none";
+            openMenuBtn.style.display = "block";
+        }
+
+
+    </script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+
+</body>
+
+</html>
